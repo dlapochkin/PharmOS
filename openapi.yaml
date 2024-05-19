@@ -1,0 +1,650 @@
+openapi: 3.0.0
+info:
+  title: PharmOS API
+  version: 1.0.0
+servers:
+  - url: https://api.server.test/api/v1
+tags:
+  - name: Users
+  - name: Tags
+  - name: Medicine kits
+  - name: Medicine
+  - name: GET
+  - name: POST
+  - name: PUT
+  - name: DELETE
+paths:
+  /users/{id}:
+    get:
+      summary: Get user information
+      tags:
+        - Users
+        - GET
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+                    username: 
+                      type: string
+                      example: user
+                    birth_date: 
+                      type: string
+                      format: date
+                      example: 1970-01-01
+                    create_at: 
+                      type: string
+                      format: date
+                      example: 2024-05-19
+                    is_premium:
+                      type: boolean
+                      example: false
+                    apple_id:
+                      type: string
+                      example: user@icloud.com
+                    email: 
+                      type: string
+                      example: user@example.com
+                    email_verified: 
+                      type: boolean
+                      example: false
+        400:
+          description: Invalid ID supplied
+        404:
+          description: User not found
+    put:
+      summary: Update user information
+      tags:
+        - Users
+        - PUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+      requestBody:
+        description: New user data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - create_at
+                - is_premium
+                - apple_id
+                - email
+              properties:
+                    username: 
+                      type: string
+                      example: updated_user
+                    birth_date: 
+                      type: string
+                      format: date
+                      example: 1970-01-01
+                    is_premium:
+                      type: boolean
+                      example: true
+                    apple_id:
+                      type: string
+                      example: updated_user@icloud.com
+                    email: 
+                      type: string
+                      example: updated_user@gmail.com
+                    email_verified: 
+                      type: boolean
+                      example: true
+      responses:
+        200:
+          description: Successful update
+        400:
+          description: Invalid ID supplied
+        404:
+          description: User not found
+        405:
+          description: Invalid input
+          
+  /users/new:
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+        - POST
+      requestBody:
+        description: Data for the new user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - create_at
+                - is_premium
+                - apple_id
+                - email
+              properties:
+                    username: 
+                      type: string
+                      example: user
+                    birth_date: 
+                      type: string
+                      format: date
+                      example: 1970-01-01
+                    create_at: 
+                      type: string
+                      format: date
+                      example: 2024-05-19
+                    is_premium:
+                      type: boolean
+                      example: false
+                    apple_id:
+                      type: string
+                      example: user@icloud.com
+                    email: 
+                      type: string
+                      example: user@example.com
+                    email_verified: 
+                      type: boolean
+                      example: false
+      responses:
+        201:
+          description: Successful creation
+        400:
+          description: Invalid ID supplied
+        404:
+          description: User not found
+        405:
+          description: Invalid input
+          
+  /medicine_kits/all/{user_id}:
+    get:
+      summary: Get all user's medicine kits
+      tags:
+        - Medicine kits
+        - GET
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: 58729cb2-5c85-4889-b4ec-c7e57cfa4991
+                      user_id:
+                        type: string
+                        format: uuid
+                        example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+                      name:
+                        type: string
+                        example: First aid kit
+        400:
+          description: Invalid ID supplied
+        404:
+          description: User not found
+          
+  /medicine_kits/{id}:
+    get:
+      summary: Get medicine kit information
+      tags:
+        - Medicine kits
+        - GET
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Medical kit identifier
+          schema:
+            type: string
+            format: uuid
+            example: 58729cb2-5c85-4889-b4ec-c7e57cfa4991
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 58729cb2-5c85-4889-b4ec-c7e57cfa4991
+                    user_id:
+                      type: string
+                      format: uuid
+                      example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+                    name:
+                      type: string
+                      example: First aid kit
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Kit not found
+    put:
+      summary: Update medicine kit information
+      tags:
+        - Medicine kits
+        - PUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Medical kit identifier
+          schema:
+            type: string
+            format: uuid
+            example: 58729cb2-5c85-4889-b4ec-c7e57cfa4991
+      requestBody:
+        description: New medicine kit data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                    name:
+                      type: string
+                      example: Home first aid kit
+      responses:
+        200:
+          description: Successful request
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Kit not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Medicine kits
+      - DELETE
+      summary: Delete medicine kit
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Medicine kit identifier
+          schema:
+            type: string
+            format: uuid
+            example: 58729cb2-5c85-4889-b4ec-c7e57cfa4991
+      responses:
+        204:
+          description: Successful deletion
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Kit not found
+          
+  /medicine_kits/new/{user_id}:
+    post:
+      summary: Create a new medicine kit
+      tags:
+        - Medicine kits
+        - POST
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+      requestBody:
+        description: Data for the new medical kit
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - name
+              properties:
+                    user_id: 
+                      type: string
+                      format: uuid
+                      example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+                    name:
+                      type: string
+                      example: First aid kit
+      responses:
+        201:
+          description: Successful creation
+        400:
+          description: Invalid ID supplied
+        404:
+          description: User not found
+        405:
+          description: Invalid input
+  
+  /tags/all/{user_id}:
+      get:
+        summary: Get all user's tags
+        tags:
+          - Tags
+          - GET
+        parameters:
+          - name: user_id
+            in: path
+            required: true
+            description: User identifier
+            schema:
+              type: string
+              format: uuid
+              example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+        responses:
+          200:
+            description: Successful request
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                          example: 55c132a0-f619-4873-bebe-a400ceebff25
+                        user_id:
+                          type: string
+                          format: uuid
+                          example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+                        title:
+                          type: string
+                          example: Antihistamines
+                        color:
+                          type: string
+                          format: hex
+                          example: 0000FF
+          400:
+            description: Invalid ID supplied
+          404:
+            description: User not found
+          
+  /tags/{id}:
+    get:
+      summary: Get tag information
+      tags:
+        - Tags
+        - GET
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tag identifier
+          schema:
+            type: string
+            format: uuid
+            example: 55c132a0-f619-4873-bebe-a400ceebff25
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: 55c132a0-f619-4873-bebe-a400ceebff25
+                    user_id:
+                      type: string
+                      format: uuid
+                      example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+                    title:
+                      type: string
+                      example: Antihistamines
+                    color:
+                      type: string
+                      format: hex
+                      example: 0000FF
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Tag not found
+    put:
+      summary: Update tag information
+      tags:
+        - Tags
+        - PUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tag identifier
+          schema:
+            type: string
+            format: uuid
+            example: 55c132a0-f619-4873-bebe-a400ceebff25
+      requestBody:
+        description: New tag data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - color
+              properties:
+                title:
+                  type: string
+                  example: Sedative
+                color:
+                  type: string
+                  format: hex
+                  example: FF5733 
+      responses:
+        200:
+          description: Successful request
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Tag not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Tags
+      - DELETE
+      summary: Delete tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tag identifier
+          schema:
+            type: string
+            format: uuid
+            example: 55c132a0-f619-4873-bebe-a400ceebff25
+      responses:
+        204:
+          description: Successful deletion
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Tag not found
+          
+  /tags/new/{user_id}:
+    post:
+      summary: Create a new tag
+      tags:
+        - Tags
+        - POST
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User identifier
+          schema:
+            type: string
+            format: uuid
+            example: 50067527-5ce6-41dc-91e4-8d63c79eadba
+      requestBody:
+        description: Data for a new tag
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - color
+              properties:
+                title:
+                  type: string
+                  example: Antihistamines
+                color:
+                  type: string
+                  format: hex
+                  example: 0000FF
+      responses:
+        201:
+          description: Successful creation
+        400:
+          description: Invalid ID supplied
+        404:
+          description: User not found
+        405:
+          description: Invalid input
+          
+  /medicine_info/{id}:
+    get:
+      summary: Get official medicine information
+      tags:
+        - Medicine
+        - GET
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Medicine info identifier
+          schema:
+            type: string
+            format: uuid
+            example: e290bb12-d4f7-41d7-99f8-0fbba93704a0
+      responses:
+        200:
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: e290bb12-d4f7-41d7-99f8-0fbba93704a0
+                    GTIN:
+                      type: string
+                      example: 04601907002287
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Medicine not found
+    put:
+      summary: Update official medicine information
+      tags:
+        - Medicine
+        - PUT
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Medicine info identifier
+          schema:
+            type: string
+            format: uuid
+            example: e290bb12-d4f7-41d7-99f8-0fbba93704a0
+      requestBody:
+        description: New official medicine data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - GTIN
+              properties:
+                GTIN:
+                  type: string
+                  example: 04607027765699
+      responses:
+        200:
+          description: Successful request
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Medicine not found
+        405:
+          description: Invalid input
+    delete:
+      tags:
+      - Medicine
+      - DELETE
+      summary: Delete official medicine information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Medicine info identifier
+          schema:
+            type: string
+            format: uuid
+            example: e290bb12-d4f7-41d7-99f8-0fbba93704a0
+      responses:
+        204:
+          description: Successful deletion
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Medicine not found
